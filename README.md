@@ -37,7 +37,7 @@ devtinder/
 
 ```bash
 git clone https://github.com/dibendughosal/DevTinder.git
-cd devtinder
+cd DevTinder
 ```
 
 ### 2️⃣ Install dependencies
@@ -53,15 +53,14 @@ npm run dev
 #### Backend
 
 ```bash
-cd backend
 npm install
 npm run dev
 ```
 
 ### 3️⃣ Setup environment variables
 
--   Create a `.env` file in both **frontend** and **backend** folders.
--   Add necessary environment variables as per the `.env.example`.
+- Create a `.env` file in both **frontend** and **backend** folders.
+- Add necessary environment variables as per the `.env.example`.
 
 ## 🚀 Contributing
 
@@ -72,7 +71,7 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 🚧 **Online/Offline Status** – Show when a user is online or last seen.  
 💬 **Typing Indicator** – Show when the other user is typing (WhatsApp-style).  
 📎 **File Attachments in Chat** – Send and receive images, PDFs, or code snippets.  
-🎨 **UI/UX Improvements** – Make the interface sleeker and more interactive.   
+🎨 **UI/UX Improvements** – Make the interface sleeker and more interactive.  
 🎯 **Daily Match Suggestions** – Algorithmic suggestions based on mutual interests or languages.  
 📊 **Activity Stats** – Track profile views, swipe counts, and connection stats.  
 🛡️ **Reporting & Blocking** – Allow users to report/block inappropriate behavior.  
