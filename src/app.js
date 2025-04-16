@@ -81,11 +81,11 @@ app.get("/profile", async(req, res)=> {
         const {_id} = decodedMessage;
         console.log("login user is", _id)
 
-        const user = User.findById(_id)
+        const user = await User.findById(_id)
         if(!user){
             throw new Error("Invalid Request")
         }
-        res.send("Reading Cookie")
+        res.send(user) 
     }
     catch(err){
         res.status(401).send("Something went wrong.")
