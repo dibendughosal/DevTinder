@@ -6,7 +6,7 @@ const connectDB = async(req, res) => {
         res.send("database connection Successfully");
     }
     catch(err){
-        console.error("Error...");
+        console.log("Error...");
     }
 }
 module.exports = connectDB;
