@@ -1,4 +1,5 @@
 const validator = require('validator');
+const User = require('../models/userSchema');
 
 const validateSignUp = (req) => {
     const {firstName, lastName, email, password} = req.body;
@@ -13,4 +14,13 @@ const validateSignUp = (req) => {
         throw new Error("Please Enter a Strong Password..")
     }
 }
-module.exports = {validateSignUp,};
+
+const validateUserData = (req) => {
+    const allowEditKeys = ["firstName", "lastName", "age", "photoUrl", "about", "skill"];
+
+    return Object.keys(req.body).every( keys => allowEditKeys.includes(keys));
+}
+
+module.exports = { 
+    validateSignUp, 
+    validateUserData, };
