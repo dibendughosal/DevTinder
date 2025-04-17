@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const connectDB = require("./database/db");
 const app = express();
@@ -30,23 +31,9 @@ app.post("/signup", async (req,res) => {
         res.send("User added Successfully")
     }
     catch(err){
-        res.status(401).send("Error: ", err.message)
+        res.status(401).send("Error: Please try again ", err.message)
     }
 });
-
-app.get("/user", async(req,res)=> {
-    const email = req.body.email;
-    try{
-        const users = await User.findOne({email});
-        res.send(users);
-    }
-    catch(err){
-        res.status(401).json({
-            success: false,
-            message: "User Not Found"
-        })
-    }
-})
 
 app.post("/login", async(req, res)=> {
     const {email, password} = req.body;
@@ -57,11 +44,11 @@ app.post("/login", async(req, res)=> {
     if(!user){
         throw new Error("Invalid Credentials");
     }
-    const checkPassword = await bcrypt.compare(password, user.password);
+    const checkPassword = await user.validatePassword(password);
     if(checkPassword){
 
-        const token = jwt.sign({_id: user._id}, "Dev@Tinder$2025")
-        res.cookie("token", token);
+        const token = await user.getJWT();
+        res.cookie("token", token, { expires: new Date(Date.now() + 700000)});
         res.send("Login Successful");
     }
     else{
@@ -79,53 +66,20 @@ app.get("/profile", userAuth, async(req, res)=> {
     }
 
 })
-
-app.get("/feed", async(req, res)=> {
-    try{ 
-        const user = await User.find({});
-        res.send(user);
-    }
-    catch(err){
-        res.status(404).jsonsend("Something went wrong")
-    }
-});
-
-app.delete("/user", async(req,res)=> {
-    const {email} = req.body
+app.post("/sendConnectionRequest", userAuth, async(req,res)=> {
     try{
-        const user = await User.findOneAndDelete({email})
-        res.send("user Deleted Successfully");
+        const user = req.user;
+        res.send(user.firstName + " sent you a Connection request.");
     }
     catch(error){
-        res.status(404).send("Something Went wrong!")
-    }
-}) 
-
-app.patch("/user", async(req, res)=> {
-    const email = req.body.email;
-    const data = req.body // data to be updated
-
-    try{
-        const ALLOWED_UPDATES = ["userId", "photoUrl", "gender", "age", "skills"];
-
-    const isUpdatedAllowed = Object.keys(data).every((k)=> ALLOWED_UPDATES.includes(k));
-
-    if(!isUpdatedAllowed){
-        throw new Error("Updated not allowed...")
-    }
-
-    const user = await User.findOneAndUpdate({email: email}, data);
-        res.send("User Updated Successfully");
-    }
-    catch(error){
-        res.status(401).send("user not found");
+        res.status(400).send("something went Wrong.")
     }
 })
 
 connectDB()
 .then(() => {
     console.log("Database Connection Successfully");
-    app.listen(7777, () => console.log("Server running at 7777"));
+    app.listen(process.env.PORT, () => console.log(`Server running at ${process.env.PORT}`));
 })
 .catch((err) => {
     console.error("Error in Connection", err.message);
