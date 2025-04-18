@@ -4,7 +4,7 @@ const User = require('../models/userSchema');
 const validateSignUp = (req) => {
     const {firstName, lastName, email, password} = req.body;
 
-    if(!firstName){
+    if(!firstName || !lastName){
         throw new Error("Enter a Valid Name");
     }
     else if(!validator.isEmail(email)){

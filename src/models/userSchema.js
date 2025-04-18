@@ -62,6 +62,7 @@ userSchema.methods.validatePassword = async function(passwordByUser){
 
     return isPasswordValid;
 }
+userSchema.index({ firstName: 1, lastName: 1});
 
 const User = mongoose.model("user", userSchema);
 module.exports = User;
